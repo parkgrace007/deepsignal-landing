@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>딥시그널 - AI 자동 매매 시스템</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* 히어로 섹션 */
+        .hero {
+            position: relative;
+            width: 100%;
+            max-width: 768px;
+            margin: 0 auto;
+            height: 75vh;
+            max-height: 650px;
+            min-height: 500px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 100px;
+            overflow: hidden;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+            z-index: 1;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 100%;
+            height: calc(100% + 200px);
+            transform: translateX(-50%) translateY(-200px);
+            z-index: 2;
+            opacity: 0.5;
+            object-fit: contain;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 4;
+            text-align: center;
+            padding: 0 20px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .hero-logo {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .hero-logo svg {
+            width: 70px;
+            height: 70px;
+        }
+
+        .hero-logo img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .hero-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.3;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            margin-bottom: 40px;
+            line-height: 1.5;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            display: inline-block;
+            width: 80%;
+            max-width: 400px;
+            height: 48px;
+            background: linear-gradient(135deg, #ffc600 0%, #ffaa00 100%);
+            color: #0a0a0a;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 24px;
+            cursor: pointer;
+            text-decoration: none;
+            line-height: 48px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 198, 0, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(255, 198, 0, 0.5);
+        }
+
+        .hero-disclaimer {
+            margin-top: 30px;
+            font-size: 12px;
+            opacity: 0.7;
+            line-height: 1.4;
+        }
+
+        /* 반응형 디자인 */
+        @media (min-width: 768px) {
+            .hero-logo {
+                width: 180px;
+                height: 180px;
+            }
+
+            .hero-logo svg {
+                width: 80px;
+                height: 80px;
+            }
+
+            .hero-title {
+                font-size: 32px;
+            }
+
+            .hero-subtitle {
+                font-size: 20px;
+            }
+
+            .cta-button {
+                font-size: 20px;
+                height: 52px;
+                line-height: 52px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .hero-title {
+                font-size: 24px;
+            }
+
+            .hero-subtitle {
+                font-size: 16px;
+            }
+        }
+
+        /* 부드러운 스크롤 */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* 메인 컨텐츠 섹션 */
+        .main-content {
+            padding: 40px 20px 100px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .section-header-wrapper {
+            background-image: url('2back.jpg');
+            background-size: contain;
+            background-position: center top;
+            background-repeat: no-repeat;
+            border-radius: 16px;
+            padding: 0;
+            margin-bottom: 60px;
+            padding-bottom: 30px;
+            padding-top: 40px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .highlight-text {
+            color: #ffc600;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 17px;
+            opacity: 0.85;
+            margin-bottom: 50px;
+            font-weight: 400;
+            letter-spacing: -0.2px;
+        }
+
+        .flow-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .flow-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .flow-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 16px;
+            background: #ffc600;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(255, 198, 0, 0.4);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .flow-step:hover .flow-icon {
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 198, 0, 0.6);
+        }
+
+        .flow-icon::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255, 198, 0, 0.3) 0%, rgba(255, 198, 0, 0) 100%);
+            z-index: -1;
+            animation: pulse-ring 2s ease-out infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.3);
+                opacity: 0;
+            }
+        }
+
+        .flow-icon img {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+        }
+
+        .flow-icon svg {
+            width: 38px;
+            height: 38px;
+            fill: #0a0a0a;
+        }
+
+        .flow-text {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #ffffff;
+        }
+
+        .flow-time {
+            font-size: 14px;
+            opacity: 0.6;
+            font-weight: 500;
+        }
+
+        .flow-arrow {
+            font-size: 24px;
+            color: #ffc600;
+            margin: 0 8px;
+            flex-shrink: 0;
+            margin-bottom: 60px;
+            font-weight: 700;
+        }
+
+        .completion-badge {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .completion-text {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(255, 198, 0, 0.15) 0%, rgba(255, 198, 0, 0.05) 100%);
+            border: 1px solid rgba(255, 198, 0, 0.3);
+            border-radius: 50px;
+            padding: 10px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #ffc600;
+        }
+
+        /* AI 자동화 리스트 */
+        .ai-automation {
+            margin-bottom: 70px;
+            background: linear-gradient(135deg, rgba(255, 198, 0, 0.03) 0%, rgba(255, 198, 0, 0) 100%);
+            border-radius: 16px;
+            padding: 32px 20px;
+            border: 1px solid rgba(255, 198, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-automation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 198, 0, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .automation-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 32px;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+            text-align: center;
+            position: relative;
+        }
+
+        .ai-process-list {
+            list-style: none;
+            display: grid;
+            gap: 12px;
+            position: relative;
+        }
+
+        .ai-process-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 198, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .ai-process-list li:hover {
+            background: rgba(255, 198, 0, 0.05);
+            border-color: rgba(255, 198, 0, 0.25);
+            transform: translateX(4px);
+        }
+
+        .process-number {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #ffc600 0%, #ffaa00 100%);
+            color: #0a0a0a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 800;
+            box-shadow: 0 4px 12px rgba(255, 198, 0, 0.3);
+        }
+
+        .process-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .process-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.3px;
+        }
+
+        .process-desc {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.4;
+            letter-spacing: -0.2px;
+        }
+
+        /* 카드 스타일 */
+        .card {
+            background: #111111;
+            border: 1px solid #1f1f1f;
+            border-radius: 12px;
+            padding: 0;
+            margin-bottom: 16px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .card:hover {
+            border-color: #2a2a2a;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .card::before {
+            display: none;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 24px;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            background: #ffc600;
+            border: none;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-icon img {
+            width: 28px;
+            height: 28px;
+        }
+
+        .card-icon svg {
+            width: 26px;
+            height: 26px;
+            fill: #0a0a0a;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: -0.3px;
+        }
+
+        .card-body {
+            padding: 20px 24px 24px;
+        }
+
+        .card-content {
+            font-size: 16px;
+            line-height: 1.6;
+            display: grid;
+            gap: 10px;
+        }
+
+        .card-content div {
+            margin-bottom: 0;
+            padding-left: 0;
+            position: relative;
+            opacity: 0.85;
+            font-weight: 400;
+            letter-spacing: -0.2px;
+        }
+
+        .card-content div::before {
+            display: none;
+        }
+
+        .card-content div:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-cta {
+            margin-top: 48px;
+            text-align: center;
+        }
+
+        /* 반응형 - 메인 컨텐츠 */
+        @media (max-width: 480px) {
+            .section-header-wrapper {
+                padding-bottom: 25px;
+                padding-top: 30px;
+                border-radius: 12px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .section-subtitle {
+                margin-bottom: 40px;
+            }
+
+            .ai-automation {
+                padding: 24px 16px;
+            }
+
+            .automation-title {
+                font-size: 20px;
+                margin-bottom: 24px;
+            }
+
+            .ai-process-list {
+                gap: 10px;
+            }
+
+            .ai-process-list li {
+                padding: 12px 14px;
+            }
+
+            .process-number {
+                width: 28px;
+                height: 28px;
+                font-size: 13px;
+            }
+
+            .process-title {
+                font-size: 14px;
+            }
+
+            .process-desc {
+                font-size: 12px;
+            }
+
+            .flow-icon {
+                width: 65px;
+                height: 65px;
+            }
+
+            .flow-icon svg {
+                width: 32px;
+                height: 32px;
+            }
+
+            .flow-text {
+                font-size: 15px;
+            }
+
+            .flow-arrow {
+                font-size: 18px;
+                margin: 0 4px;
+            }
+
+            .flow-time {
+                font-size: 12px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .main-content {
+                padding: 40px 40px 100px;
+            }
+
+            .section-header-wrapper {
+                padding-top: 50px;
+                padding-bottom: 40px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+
+            .section-subtitle {
+                margin-bottom: 60px;
+            }
+
+            .ai-automation {
+                padding: 40px 32px;
+            }
+
+            .automation-title {
+                font-size: 26px;
+                margin-bottom: 36px;
+            }
+
+            .ai-process-list {
+                gap: 14px;
+            }
+
+            .ai-process-list li {
+                padding: 16px 18px;
+            }
+
+            .process-number {
+                width: 34px;
+                height: 34px;
+                font-size: 16px;
+            }
+
+            .process-title {
+                font-size: 17px;
+            }
+
+            .process-desc {
+                font-size: 14px;
+            }
+
+            .flow-icon {
+                width: 90px;
+                height: 90px;
+            }
+
+            .flow-icon svg {
+                width: 42px;
+                height: 42px;
+            }
+
+            .flow-text {
+                font-size: 19px;
+            }
+
+            .completion-text {
+                font-size: 16px;
+            }
+        }
+
+        /* 최종 CTA 섹션 */
+        .final-section {
+            padding: 100px 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .backtesting-header {
+            font-size: 15px;
+            margin-bottom: 10px;
+            opacity: 0.6;
+            font-weight: 500;
+            letter-spacing: -0.2px;
+        }
+
+        .backtesting-result {
+            font-size: 36px;
+            font-weight: 800;
+            color: #ffc600;
+            margin-bottom: 8px;
+            letter-spacing: -0.8px;
+        }
+
+        .backtesting-note {
+            font-size: 14px;
+            opacity: 0.5;
+            margin-bottom: 48px;
+            font-weight: 400;
+        }
+
+        .chart-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 198, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-content {
+            width: 90%;
+            height: 80%;
+            position: relative;
+        }
+
+        .chart-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .chart-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            opacity: 0.1;
+        }
+
+        .chart-grid-line {
+            width: 100%;
+            height: 1px;
+            background-color: #ffc600;
+        }
+
+        .chart-label {
+            position: absolute;
+            font-size: 12px;
+            color: #ffc600;
+            font-weight: 600;
+        }
+
+        .chart-year {
+            bottom: -25px;
+            font-size: 11px;
+            opacity: 0.7;
+        }
+
+        .final-message {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 32px;
+            letter-spacing: -0.5px;
+        }
+
+        .checklist-wrapper {
+            position: relative;
+            max-width: 480px;
+            margin: 0 auto 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+        }
+
+        .final-checklist {
+            list-style: none;
+            text-align: left;
+            display: grid;
+            gap: 12px;
+            flex: 0 1 auto;
+        }
+
+        .checklist-logo {
+            flex-shrink: 0;
+            width: 110px;
+            height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: floatSlow 4s ease-in-out infinite;
+        }
+
+        .checklist-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: brightness(1.1);
+        }
+
+        @keyframes floatSlow {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(5deg);
+            }
+        }
+
+        .final-checklist li {
+            font-size: 17px;
+            padding: 0;
+            position: relative;
+            background: none;
+            border-radius: 0;
+            margin-bottom: 0;
+            border: none;
+            transition: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            letter-spacing: -0.2px;
+        }
+
+        .final-checklist li:hover {
+            transform: none;
+            border-color: none;
+        }
+
+        .final-checklist li::before {
+            content: '';
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            background: #ffc600;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: static;
+            transform: none;
+        }
+
+        .final-checklist li::after {
+            content: '✓';
+            position: absolute;
+            left: 5px;
+            color: #0a0a0a;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .cta-button-large {
+            display: inline-block;
+            width: 90%;
+            max-width: 450px;
+            height: 56px;
+            background: linear-gradient(135deg, #ffc600 0%, #ffaa00 100%);
+            color: #0a0a0a;
+            font-size: 20px;
+            font-weight: 600;
+            border: none;
+            border-radius: 28px;
+            cursor: pointer;
+            text-decoration: none;
+            line-height: 56px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(255, 198, 0, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        .cta-button-large:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 30px rgba(255, 198, 0, 0.6);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 4px 20px rgba(255, 198, 0, 0.4);
+            }
+            50% {
+                box-shadow: 0 4px 30px rgba(255, 198, 0, 0.6);
+            }
+        }
+
+        .completion-time {
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* 팝업 모달 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+            border: 2px solid #ffc600;
+            border-radius: 16px;
+            padding: 40px 30px;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 28px;
+            color: #ffffff;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: #ffc600;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .modal-subtitle {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #ffc600;
+            font-weight: 600;
+        }
+
+        .form-input {
+            width: 100%;
+            height: 48px;
+            background-color: #0a0a0a;
+            border: 1px solid rgba(255, 198, 0, 0.3);
+            border-radius: 8px;
+            padding: 0 15px;
+            color: #ffffff;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #ffc600;
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .modal-button {
+            width: 100%;
+            height: 52px;
+            background: linear-gradient(135deg, #ffc600 0%, #ffaa00 100%);
+            color: #0a0a0a;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 26px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 198, 0, 0.3);
+        }
+
+        .modal-button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 25px rgba(255, 198, 0, 0.5);
+        }
+
+        .modal-button:active {
+            transform: scale(0.98);
+        }
+
+        /* 반응형 - 모달 */
+        @media (max-width: 480px) {
+            .modal-content {
+                padding: 30px 20px;
+            }
+
+            .modal-title {
+                font-size: 20px;
+            }
+        }
+
+        /* 푸터 */
+        footer {
+            background-color: #050505;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .footer-contact {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .footer-contact a {
+            color: #ffc600;
+            text-decoration: none;
+        }
+
+        .footer-contact a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-disclaimer {
+            font-size: 13px;
+            opacity: 0.6;
+        }
+
+        /* 스크롤 애니메이션 */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 반응형 - 최종 섹션 */
+        @media (max-width: 480px) {
+            .checklist-wrapper {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .checklist-logo {
+                width: 100px;
+                height: 100px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .final-section {
+                padding: 100px 40px;
+            }
+
+            .backtesting-result {
+                font-size: 32px;
+            }
+
+            .final-message {
+                font-size: 28px;
+            }
+
+            .cta-button-large {
+                font-size: 22px;
+                height: 60px;
+                line-height: 60px;
+            }
+
+            .checklist-logo {
+                width: 140px;
+                height: 140px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 히어로 섹션 -->
+    <section class="hero">
+        <div class="hero-background"></div>
+        <video class="hero-video" autoplay muted loop playsinline preload="auto">
+            <source src="hero-video.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <!-- 로고 -->
+            <div class="hero-logo">
+                <img src="DEEPLOG.png" alt="딥시그널 로고">
+            </div>
+
+            <h1 class="hero-title">딥시크 기반 AI 자동 매매 시스템</h1>
+            <p class="hero-subtitle">선물대회 1등 알고리즘<br>연평균 수익률 412%* 검증 완료</p>
+            <a href="#" class="cta-button" onclick="openModal(event)">무료 체험하기</a>
+            <p class="hero-disclaimer">*2021-2024 백테스팅 결과,<br>과거 수익률이 미래 수익을 보장하지 않습니다</p>
+        </div>
+    </section>
+
+    <!-- 메인 컨텐츠 섹션 -->
+    <section class="main-content">
+        <!-- 원버튼 강조 -->
+        <div class="section-header-wrapper">
+            <h2 class="section-title">원버튼으로 끝, <span class="highlight-text">딥시그널</span></h2>
+            <p class="section-subtitle">복잡한 설정 없이 3분이면 시작</p>
+
+            <div class="flow-container">
+                <div class="flow-step">
+                    <div class="flow-icon">
+                        <img src="icon-plug.png" alt="API 연결">
+                    </div>
+                    <div class="flow-text">API 연결</div>
+                    <div class="flow-time">(2분)</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-icon">
+                        <img src="icon-coin.png" alt="금액 설정">
+                    </div>
+                    <div class="flow-text">금액 설정</div>
+                    <div class="flow-time">(1분)</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-icon">
+                        <img src="icon-play.png" alt="시작">
+                    </div>
+                    <div class="flow-text">시작</div>
+                    <div class="flow-time">(클릭)</div>
+                </div>
+            </div>
+
+            <div class="completion-badge">
+                <span class="completion-text">⚡ 3분이면 완료</span>
+            </div>
+        </div>
+
+        <!-- AI 자동화 리스트 -->
+        <div class="ai-automation">
+            <h3 class="automation-title">딥시그널 AI 가 하는일</h3>
+            <ul class="ai-process-list">
+                <li>
+                    <div class="process-number">1</div>
+                    <div class="process-content">
+                        <div class="process-title">실시간 차트 분석</div>
+                        <div class="process-desc">최근 틱 데이터 자동 수집 및 AI 분석</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="process-number">2</div>
+                    <div class="process-content">
+                        <div class="process-title">시장 상황 분석</div>
+                        <div class="process-desc">차트/뉴스/고래지갑 실시간 스캔</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="process-number">3</div>
+                    <div class="process-content">
+                        <div class="process-title">포지션 계산</div>
+                        <div class="process-desc">롱 / 숏 / 미진입 판단 대형 알고리즘</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="process-number">4</div>
+                    <div class="process-content">
+                        <div class="process-title">진입 실행</div>
+                        <div class="process-desc">투자금·레버리지 자동 계산 후 포지션 오픈</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="process-number">5</div>
+                    <div class="process-content">
+                        <div class="process-title">리스크 관리</div>
+                        <div class="process-desc">손절가·익절가 자동 설정 및 지속 업데이트</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="process-number">6</div>
+                    <div class="process-content">
+                        <div class="process-title">자동 청산</div>
+                        <div class="process-desc">목표 도달 / 위험 신호 감지 시 포지션 종료</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="process-number">7</div>
+                    <div class="process-content">
+                        <div class="process-title">3중 안전장치</div>
+                        <div class="process-desc">일일 손실 5% 자동 중단, 자산 보호 시스템</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- CTA 버튼 -->
+        <div class="section-cta">
+            <a href="#" class="cta-button" onclick="openModal(event)">지금 시작하기</a>
+        </div>
+    </section>
+
+    <!-- 최종 CTA 섹션 -->
+    <section class="final-section fade-in">
+        <!-- 백테스팅 결과 -->
+        <div class="backtesting-header">2021-2024 백테스팅</div>
+        <div class="backtesting-result">연평균 412% 수익률</div>
+        <div class="backtesting-note">(수수료 포함 실전 조건)</div>
+
+        <!-- 그래프 영역 -->
+        <div class="chart-placeholder">
+            <div class="chart-content">
+                <!-- 그리드 선 -->
+                <div class="chart-grid">
+                    <div class="chart-grid-line"></div>
+                    <div class="chart-grid-line"></div>
+                    <div class="chart-grid-line"></div>
+                    <div class="chart-grid-line"></div>
+                    <div class="chart-grid-line"></div>
+                </div>
+
+                <!-- SVG 차트 라인 -->
+                <svg class="chart-line" viewBox="0 0 400 200" preserveAspectRatio="none">
+                    <!-- 배경 그라데이션 영역 -->
+                    <defs>
+                        <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#ffc600;stop-opacity:0.3" />
+                            <stop offset="100%" style="stop-color:#ffc600;stop-opacity:0" />
+                        </linearGradient>
+                    </defs>
+
+                    <!-- 그라데이션 영역 -->
+                    <path d="M 0 180 L 0 150 L 100 120 L 200 80 L 300 60 L 400 20 L 400 200 L 0 200 Z"
+                          fill="url(#chartGradient)" />
+
+                    <!-- 차트 라인 -->
+                    <polyline points="0,150 100,120 200,80 300,60 400,20"
+                              fill="none"
+                              stroke="#ffc600"
+                              stroke-width="3"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"/>
+
+                    <!-- 포인트 점들 -->
+                    <circle cx="0" cy="150" r="4" fill="#ffc600"/>
+                    <circle cx="100" cy="120" r="4" fill="#ffc600"/>
+                    <circle cx="200" cy="80" r="4" fill="#ffc600"/>
+                    <circle cx="300" cy="60" r="4" fill="#ffc600"/>
+                    <circle cx="400" cy="20" r="5" fill="#ffc600">
+                        <animate attributeName="r" values="5;7;5" dur="1.5s" repeatCount="indefinite"/>
+                    </circle>
+                </svg>
+
+                <!-- 연도 라벨 -->
+                <div class="chart-label chart-year" style="left: 0%;">2021</div>
+                <div class="chart-label chart-year" style="left: 22%;">2022</div>
+                <div class="chart-label chart-year" style="left: 47%;">2023</div>
+                <div class="chart-label chart-year" style="left: 72%;">2024</div>
+                <div class="chart-label chart-year" style="right: 0;">Now</div>
+
+                <!-- 수익률 라벨 -->
+                <div class="chart-label" style="right: 0; top: 15px;">+412%</div>
+            </div>
+        </div>
+
+        <!-- 최종 메시지 -->
+        <h2 class="final-message">지금 시작 해야하는 이유!</h2>
+
+        <div class="checklist-wrapper">
+            <ul class="final-checklist">
+                <li>국내 최초 출시</li>
+                <li>7일 무료체험</li>
+                <li>카드 등록 불필요</li>
+                <li>100% 한글 지원</li>
+            </ul>
+            <div class="checklist-logo">
+                <img src="DEEPLOG.png" alt="딥시그널 로고">
+            </div>
+        </div>
+
+        <!-- 대형 CTA 버튼 -->
+        <a href="#" class="cta-button-large" onclick="openModal(event)">무료 체험 시작</a>
+
+        <p class="completion-time">10초 신청 완료</p>
+    </section>
+
+    <!-- 푸터 -->
+    <footer>
+        <div class="footer-disclaimer">투자 손실 위험 있음</div>
+    </footer>
+
+    <!-- 신청 팝업 모달 -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h2 class="modal-title">무료 체험 신청</h2>
+            <p class="modal-subtitle">10초면 신청 완료!</p>
+
+            <form id="signupForm" onsubmit="handleSubmit(event)">
+                <div class="form-group">
+                    <label class="form-label" for="userName">성함</label>
+                    <input type="text" id="userName" name="userName" class="form-input" placeholder="홍길동" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="userContact">연락처</label>
+                    <input type="tel" id="userContact" name="userContact" class="form-input" placeholder="010-1234-5678" required>
+                </div>
+
+                <button type="submit" class="modal-button">신청 완료</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 스크롤 애니메이션 스크립트 -->
+    <script>
+        // 스크롤 애니메이션
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach(element => {
+                observer.observe(element);
+            });
+
+            // 메인 컨텐츠와 카드에도 애니메이션 적용
+            const mainContent = document.querySelector('.main-content');
+            const cards = document.querySelectorAll('.card');
+
+            if (mainContent) {
+                mainContent.classList.add('fade-in');
+                observer.observe(mainContent);
+            }
+
+            cards.forEach(card => {
+                card.classList.add('fade-in');
+                observer.observe(card);
+            });
+        });
+
+        // 모달 열기
+        function openModal(event) {
+            event.preventDefault();
+            const modal = document.getElementById('signupModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 모달 닫기
+        function closeModal() {
+            const modal = document.getElementById('signupModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // 모달 배경 클릭 시 닫기
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('signupModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        // ESC 키로 모달 닫기
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // 폼 제출 처리
+        function handleSubmit(event) {
+            event.preventDefault();
+
+            const userName = document.getElementById('userName').value;
+            const userContact = document.getElementById('userContact').value;
+            const submitButton = event.target.querySelector('button[type="submit"]');
+
+            // 버튼 비활성화 및 로딩 표시
+            submitButton.disabled = true;
+            submitButton.textContent = '신청 중...';
+
+            // 구글 시트로 전송할 데이터 준비
+            const formData = {
+                name: userName,
+                contact: userContact,
+                timestamp: new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
+                referrer: document.referrer || '직접 접속'
+            };
+
+            // ⭐ 여기에 구글 Apps Script 웹 앱 URL을 입력하세요 ⭐
+            // 예시: 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec'
+            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw_AGzGZUZEblAkzEnQ1dkr5iabynhxP8CrqX-5Knm4P2_7o_tR-7fULLF9rqWN0sQuCw/exec';
+
+            // 구글 시트로 데이터 전송
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors', // 구글 Apps Script는 no-cors 모드 필요
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(() => {
+                // no-cors 모드에서는 응답을 받을 수 없으므로 성공으로 간주
+                alert(`신청이 완료되었습니다!\n성함: ${userName}\n연락처: ${userContact}\n\n빠른 시일 내에 연락드리겠습니다.`);
+
+                // 폼 초기화 및 모달 닫기
+                document.getElementById('signupForm').reset();
+                closeModal();
+            })
+            .catch(error => {
+                console.error('전송 오류:', error);
+                alert('신청 중 오류가 발생했습니다.\n잠시 후 다시 시도해주세요.');
+            })
+            .finally(() => {
+                // 버튼 다시 활성화
+                submitButton.disabled = false;
+                submitButton.textContent = '신청 완료';
+            });
+        }
+    </script>
+</body>
+</html>
