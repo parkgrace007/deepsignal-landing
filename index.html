@@ -201,15 +201,29 @@
         }
 
         .section-header-wrapper {
-            background-image: url('2back.jpg');
-            background-size: contain;
-            background-position: center top;
-            background-repeat: no-repeat;
+            position: relative;
             border-radius: 16px;
             padding: 0;
             margin-bottom: 60px;
             padding-bottom: 30px;
-            padding-top: 40px;
+            padding-top: 120px;
+            overflow: hidden;
+        }
+
+        .section-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .section-header-wrapper > * {
+            position: relative;
+            z-index: 2;
         }
 
         .section-title {
@@ -1143,8 +1157,9 @@
     <section class="main-content">
         <!-- 원버튼 강조 -->
         <div class="section-header-wrapper">
-            <h2 class="section-title">원버튼으로 끝, <span class="highlight-text">딥시그널</span></h2>
-            <p class="section-subtitle">복잡한 설정 없이 3분이면 시작</p>
+            <video class="section-video" autoplay muted loop playsinline preload="auto">
+                <source src="app.mp4" type="video/mp4">
+            </video>
 
             <div class="flow-container">
                 <div class="flow-step">
